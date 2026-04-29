@@ -1,31 +1,3 @@
-# Dependencies
-node_modules/
-.pnp
-.pnp.js
-
-# Build outputs
-dist/
-dist-ssr/
-build/
-*.local
-
-# Environment variables - CRITICAL: never commit these
-.env
-.env.local
-.env.*.local
-
-# Editor / OS
-.vscode/*
-!.vscode/extensions.json
-.idea/
-.DS_Store
-*.suo
-.ntvs
-*.njsproj
-*.sln
-*.sw?
-Thumbs.db
-
 # Logs
 logs
 *.log
@@ -35,9 +7,18 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Bun
-.bun/
+node_modules
+dist
+dist-ssr
+*.local
 
-# Supabase
-supabase/.branches
-supabase/.temp
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
