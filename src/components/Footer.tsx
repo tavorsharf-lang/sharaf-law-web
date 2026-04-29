@@ -34,3 +34,78 @@ const Footer = () => {
           </div>
 
           {/* Services */}
+          <div>
+            <h4 className="text-lg font-bold text-[#d4af37] mb-4">
+              השירותים שלנו
+            </h4>
+            <ul className="space-y-2 text-gray-300">
+              <li>רכישת דירה מיד שנייה</li>
+              <li>רכישת דירה מקבלן</li>
+              <li>מכירת דירה</li>
+              <li>צוואות וירושות</li>
+              <li>מיסוי מקרקעין</li>
+              <li>ליווי משפטי כללי</li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h4 className="text-lg font-bold text-[#d4af37] mb-4">
+              פרטי קשר
+            </h4>
+            <div className="space-y-3 text-gray-300">
+              <div className="flex items-center gap-3">
+                <Phone size={16} />
+                <div>
+                  <div>03-5073749</div>
+                  <div>03-6591399</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <MapPin size={16} className="mt-1" />
+                <div>
+                  ירושלים 28 א<br />
+                  בת ים
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Working Hours */}
+          <div>
+            <h4 className="text-lg font-bold text-[#d4af37] mb-4">
+              שעות פעילות
+            </h4>
+            <div className="space-y-2 text-gray-300">
+              <div className="flex items-start gap-3">
+                <Clock size={16} className="mt-1" />
+                <div>
+                  <div>ראשון - חמישי</div>
+                  <div className="text-sm">9:00 - 18:00</div>
+                  <div className="mt-2">שישי</div>
+                  <div className="text-sm">9:00 - 13:00</div>
+                  <div className="mt-2 text-[#d4af37] text-sm font-medium">
+                    חירום: זמינים 24/7
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-600 mt-12 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-gray-300 text-sm mb-4 md:mb-0">
+              © 2024 משרד עו״ד שרף. כל הזכויות שמורות.
+            </div>
+            <div className="text-gray-300 text-sm">
+              מיקום: ירושלים 28 א, בת ים | טלפון: 03-5073749, 03-6591399
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
