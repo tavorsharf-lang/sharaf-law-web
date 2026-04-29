@@ -34,3 +34,78 @@ const Reviews = () => {
       <Star
         key={index}
         size={20}
+        className={index < rating ? "text-[#d4af37] fill-[#d4af37]" : "text-gray-300"}
+      />
+    ));
+  };
+
+  return (
+    <section id="reviews" className="py-20 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-[#1a365d] mb-4">
+            מה אומרים הלקוחות שלנו
+          </h2>
+          <p className="text-xl text-gray-600">
+            ביקורות אמיתיות מלקוחותינו המרוצים
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {reviews.map((review, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-lg p-8 relative hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="absolute top-4 right-4">
+                <Quote size={32} className="text-[#d4af37] opacity-20" />
+              </div>
+              
+              <div className="flex items-center mb-4">
+                {renderStars(review.rating)}
+              </div>
+              
+              <p className="text-gray-700 text-lg leading-relaxed mb-6 italic">
+                "{review.text}"
+              </p>
+              
+              <div className="border-t pt-4">
+                <div className="font-bold text-[#1a365d] text-lg">
+                  {review.name}
+                </div>
+                <div className="text-[#d4af37] text-sm font-medium">
+                  {review.service}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-16 text-center">
+          <div className="bg-[#1a365d] text-white rounded-lg p-8 max-w-4xl mx-auto">
+            <h3 className="text-3xl font-bold mb-4">
+              <span className="text-[#d4af37]">98%</span> שביעות רצון לקוחות
+            </h3>
+            <p className="text-xl mb-6">
+              מאות לקוחות מרוצים סומכים עלינו בעסקאות הנדל״ן החשובות ביותר שלהם
+            </p>
+            <div className="flex justify-center">
+              <a
+                href="#contact"
+                className="bg-[#d4af37] hover:bg-[#b8941f] text-[#1a365d] px-8 py-4 rounded-lg font-bold text-lg transition-colors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                הצטרפו ללקוחות המרוצים שלנו
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Reviews;
