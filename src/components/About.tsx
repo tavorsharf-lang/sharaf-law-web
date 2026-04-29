@@ -34,3 +34,75 @@ const About = () => {
                 לאורך השנים ליוונו מאות משפחות בעסקאות הנדל״ן החשובות ביותר שלהן, 
                 ועזרנו בטיפול בצוואות ובירושות במהלך הרגעים הקשים והעדינים ביותר.
               </p>
+            </div>
+          </div>
+
+          <div className="bg-[#1a365d] text-white rounded-lg p-8">
+            <h4 className="text-2xl font-bold text-[#d4af37] mb-6 text-center">
+              הערכים שלנו
+            </h4>
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <Heart className="text-[#d4af37] mt-1" size={24} />
+                <div>
+                  <h5 className="font-bold mb-2">יחס אישי וחם</h5>
+                  <p className="text-gray-300 text-sm">
+                    כל לקוח הוא חלק מהמשפחה שלנו
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <Award className="text-[#d4af37] mt-1" size={24} />
+                <div>
+                  <h5 className="font-bold mb-2">מקצועיות ללא פשרות</h5>
+                  <p className="text-gray-300 text-sm">
+                    עדכניות מתמדת ומומחיות בתחום
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <Clock className="text-[#d4af37] mt-1" size={24} />
+                <div>
+                  <h5 className="font-bold mb-2">זמינות ומהירות</h5>
+                  <p className="text-gray-300 text-sm">
+                    מענה מיידי ולליווי רציף
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <Users className="text-[#d4af37] mt-1" size={24} />
+                <div>
+                  <h5 className="font-bold mb-2">מסורת משפחתית</h5>
+                  <p className="text-gray-300 text-sm">
+                    ניסיון של 3 דורות בשירותכם
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+          <div className="bg-gray-50 rounded-lg p-6">
+            <div className="text-4xl font-bold text-[#d4af37] mb-2">40+</div>
+            <div className="text-gray-600">שנות ניסיון</div>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-6">
+            <div className="text-4xl font-bold text-[#d4af37] mb-2">500+</div>
+            <div className="text-gray-600">עסקאות מוצלחות</div>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-6">
+            <div className="text-4xl font-bold text-[#d4af37] mb-2">98%</div>
+            <div className="text-gray-600">שביעות רצון</div>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-6">
+            <div className="text-4xl font-bold text-[#d4af37] mb-2">3</div>
+            <div className="text-gray-600">דורות</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default About;
