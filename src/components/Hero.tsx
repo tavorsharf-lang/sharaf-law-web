@@ -34,3 +34,33 @@ const Hero = () => {
             
             <a
               href="https://wa.me/970542028695"
+              className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105 flex items-center gap-2"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MessageCircle size={20} />
+              שלח הודעה בווטסאפ
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+              <div className="text-3xl font-bold text-[#d4af37] mb-2">3</div>
+              <div className="text-sm text-gray-300">דורות של ניסיון</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+              <div className="text-3xl font-bold text-[#d4af37] mb-2">300+</div>
+              <div className="text-sm text-gray-300">עסקאות מוצלחות</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+              <div className="text-3xl font-bold text-[#d4af37] mb-2">24/7</div>
+              <div className="text-sm text-gray-300">זמינות ומענה</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
