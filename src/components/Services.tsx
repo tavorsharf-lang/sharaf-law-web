@@ -1,5 +1,6 @@
 
 import { Home, FileText, Calculator, Building, Key, Scale } from 'lucide-react';
+import { CONTACT, telHref } from '@/lib/contact';
 
 const Services = () => {
   const services = [
@@ -45,7 +46,7 @@ const Services = () => {
     <section id="services" className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-[#1a365d] mb-4">
+          <h2 className="text-4xl font-bold text-[#2A2826] mb-4">
             השירותים שלנו
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -60,11 +61,11 @@ const Services = () => {
               key={index}
               className="bg-gray-50 rounded-lg p-8 hover:shadow-lg transition-all duration-300 hover:bg-white border border-gray-100"
             >
-              <div className="w-16 h-16 bg-[#1a365d] rounded-lg flex items-center justify-center mb-6">
-                <service.icon size={32} className="text-[#d4af37]" />
+              <div className="w-16 h-16 bg-[#2A2826] rounded-lg flex items-center justify-center mb-6">
+                <service.icon size={32} className="text-[#A68D4F]" />
               </div>
               
-              <h3 className="text-xl font-bold text-[#1a365d] mb-4">
+              <h3 className="text-xl font-bold text-[#2A2826] mb-4">
                 {service.title}
               </h3>
               
@@ -75,7 +76,7 @@ const Services = () => {
               <ul className="space-y-2">
                 {service.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-center text-sm text-gray-600">
-                    <div className="w-2 h-2 bg-[#d4af37] rounded-full ml-3"></div>
+                    <div className="w-2 h-2 bg-[#A68D4F] rounded-full ml-3"></div>
                     {feature}
                   </li>
                 ))}
@@ -85,7 +86,7 @@ const Services = () => {
         </div>
 
         <div className="mt-16 text-center">
-          <div className="bg-[#d4af37] text-[#1a365d] rounded-lg p-8">
+          <div className="bg-[#A68D4F] text-[#2A2826] rounded-lg p-8">
             <h3 className="text-2xl font-bold mb-4">
               זקוקים לייעוץ משפטי?
             </h3>
@@ -93,18 +94,15 @@ const Services = () => {
               פנו אלינו לייעוץ ראשוני חינם ונשמח לעזור לכם
             </p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
-              <a
-                href="tel:035073749"
-                className="bg-[#1a365d] hover:bg-[#2d5a87] text-white px-8 py-3 rounded-lg font-bold transition-colors"
-              >
-                03-5073749
-              </a>
-              <a
-                href="tel:036591399"
-                className="bg-[#1a365d] hover:bg-[#2d5a87] text-white px-8 py-3 rounded-lg font-bold transition-colors"
-              >
-                03-6591399
-              </a>
+              {CONTACT.phones.map((p) => (
+                <a
+                  key={p.tel}
+                  href={telHref(p.tel)}
+                  className="bg-[#2A2826] hover:bg-[#404040] text-white px-8 py-3 rounded-lg font-bold transition-colors"
+                >
+                  {p.display}
+                </a>
+              ))}
             </div>
           </div>
         </div>

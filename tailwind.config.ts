@@ -1,5 +1,6 @@
 
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
 	darkMode: ["class"],
@@ -21,6 +22,15 @@ export default {
 		extend: {
 			fontFamily: {
 				'heebo': ['Heebo', 'sans-serif'],
+				display: ['Rubik', 'Heebo', 'system-ui', 'sans-serif'],
+				sans: ['Heebo', 'system-ui', 'sans-serif'],
+			},
+			fontSize: {
+				'eyebrow': ['13px', { lineHeight: '1.4', letterSpacing: '0.08em', fontWeight: '600' }],
+				'meta': ['12px', { lineHeight: '1.4', letterSpacing: '0.06em', fontWeight: '600' }],
+				'display-hero': ['68px', { lineHeight: '1.05', letterSpacing: '-0.025em' }],
+				'display-l': ['48px', { lineHeight: '1.10', letterSpacing: '-0.020em' }],
+				'display-m': ['44px', { lineHeight: '1.10', letterSpacing: '-0.020em' }],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -65,12 +75,37 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// === Sharaf Law redesign palette (Step 1) ===
+				ink: { DEFAULT: '#1A1A1A', soft: '#4A4A4A', mute: '#6B6B6B' },
+				rule: { DEFAULT: '#E5E5E5', soft: '#EFEFEF' },
+				bg: { DEFAULT: '#FFFFFF', alt: '#FAFBFA', warm: '#F4F0E8' },
+				brand: {
+					DEFAULT: '#2D4A3A',
+					deep: '#1F3528',
+					soft: '#EAF1EC',
+					ink: '#0F1F17',
+					light: '#C9D7CD',
+				},
+				photo: '#EEEAE2',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				pill: '999px',
+				floater: '16px',
+				card: '20px',
+				m: '24px',
+				l: '28px',
+				xl2: '32px',
+			},
+			boxShadow: {
+				floater: '0 12px 40px rgba(20,40,30,0.12)',
+				form: '0 24px 60px rgba(15,30,22,0.25)',
+			},
+			transitionTimingFunction: {
+				default: 'cubic-bezier(0.4, 0, 0.2, 1)',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -116,5 +151,5 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [tailwindcssAnimate],
 } satisfies Config;

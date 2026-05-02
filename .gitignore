@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Source/raw assets (production assets live in public/)
+/Gemini_Generated_Image_*.png
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -23,3 +26,4 @@ dist-ssr
 *.sln
 *.sw?
 .env
+supabase/.temp/
