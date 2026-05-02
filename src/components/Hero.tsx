@@ -1,63 +1,86 @@
+import { ArrowLeft } from 'lucide-react';
+import Photo from '@/components/ui/Photo';
 
-import { Phone, MessageCircle } from 'lucide-react';
-import { CONTACT, telHref, whatsappUrl } from '@/lib/contact';
+const focusRing =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
 
 const Hero = () => {
   return (
-    <section id="home" className="bg-gradient-to-l from-[#2A2826] to-[#404040] text-white py-20 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 right-10 w-32 h-32 border border-[#A68D4F] rounded-full"></div>
-        <div className="absolute bottom-20 left-10 w-24 h-24 border border-[#A68D4F] rounded-full"></div>
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            משרד עו״ד שרף
-            <span className="block text-[#A68D4F] text-3xl md:text-5xl mt-2">
-              3 דורות של מצוינות משפטית
-            </span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl mb-8 text-gray-200 leading-relaxed">
-            ליווי משפטי אישי ומקצועי בעסקאות מקרקעין, צוואות ומיסוי
+    <section
+      id="home"
+      className="bg-white px-4 md:px-10 lg:px-16 pt-[100px] pb-20"
+    >
+      <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-20 items-center">
+        {/* Copy column */}
+        <div>
+          <p className="text-eyebrow text-brand">
+            · משרד עורכי דין למקרקעין · בת ים
           </p>
 
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-12">
+          <h1 className="font-display text-[40px] md:text-[56px] lg:text-[68px] font-semibold leading-[1.05] tracking-[-0.025em] text-ink mt-6">
+            עסקת נדל״ן,
+            <br />
+            <span className="text-brand">בליווי שמרגיש</span>
+            <br />
+            <span className="text-brand">אישי.</span>
+          </h1>
+
+          <p className="text-[19px] leading-[1.6] text-ink-soft max-w-[480px] mt-8">
+            ליווי משפטי לרוכשים ומוכרים באזור בת ים, חולון וראשון לציון. רכישה,
+            מכירה, צוואות ומיסוי מקרקעין — בקצב של אנשים, לא של חוזים.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4 mt-11">
             <a
-              href={telHref(CONTACT.phones[0].tel)}
-              className="bg-[#A68D4F] hover:bg-[#8A7340] text-[#2A2826] px-8 py-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105 flex items-center gap-2"
+              href="#contact"
+              className={`group inline-flex items-center gap-2 bg-brand text-white hover:bg-brand-deep transition-colors duration-200 ease-default rounded-pill px-8 py-4 text-base font-medium ${focusRing}`}
             >
-              <Phone size={20} />
-              לייעוץ ראשוני חינם - התקשרו עכשיו
+              קביעת פגישה ראשונה
+              <ArrowLeft
+                size={18}
+                strokeWidth={2}
+                aria-hidden="true"
+                className="transition-transform duration-150 group-hover:-translate-x-0.5"
+              />
             </a>
 
-            <a
-              href={whatsappUrl()}
-              className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105 flex items-center gap-2"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle size={20} />
-              שלח הודעה בווטסאפ
-            </a>
+            <span className="text-sm text-ink-mute">
+              או{' '}
+              <a
+                href="tel:0542028695"
+                dir="ltr"
+                className={`font-medium text-ink hover:text-brand transition-colors duration-150 rounded-sm ${focusRing}`}
+              >
+                054-2028695
+              </a>
+            </span>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-3xl font-bold text-[#A68D4F] mb-2">3</div>
-              <div className="text-sm text-gray-300">דורות של ניסיון</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-3xl font-bold text-[#A68D4F] mb-2">500+</div>
-              <div className="text-sm text-gray-300">עסקאות מוצלחות</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-3xl font-bold text-[#A68D4F] mb-2">24/7</div>
-              <div className="text-sm text-gray-300">זמינות ומענה</div>
-            </div>
-          </div>
+        {/* Photo column */}
+        <div className="relative">
+          <Photo aspectRatio="4/5" radius="m" />
+
+          {/* Floating "1964" card.
+              Mobile: static, centered below photo.
+              Desktop (≥lg): absolute, bottom-6, sticking 32px past inline-end (logical = visually outward in RTL). */}
+          <aside
+            className="relative mt-4 mx-auto max-w-[240px] bg-white rounded-floater shadow-floater p-5 px-6
+                       lg:absolute lg:mt-0 lg:mx-0 lg:bottom-6 lg:end-[-32px]"
+          >
+            <p className="text-[11px] font-semibold tracking-[0.06em] text-ink-mute">
+              פעיל מאז
+            </p>
+            <p
+              dir="ltr"
+              className="font-display text-[28px] font-bold leading-none text-ink mt-1.5"
+            >
+              1964
+            </p>
+            <p className="text-[13px] leading-[1.5] text-ink-soft mt-3">
+              שלושה דורות, אותה כתובת.
+            </p>
+          </aside>
         </div>
       </div>
     </section>
