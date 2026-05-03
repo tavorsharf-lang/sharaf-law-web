@@ -4,7 +4,7 @@ import PracticeAreas from '@/components/PracticeAreas';
 import WhySharaf from '@/components/WhySharaf';
 import BuyingGuide from '@/components/BuyingGuide';
 import Reviews from '@/components/Reviews';
-import ContactForm from '@/components/ContactForm';
+import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 
@@ -18,7 +18,7 @@ const Index = () => {
         <WhySharaf />
         <BuyingGuide />
         <Reviews />
-        <ContactForm />
+        <Contact />
       </main>
       <Footer />
       <WhatsAppFloat />

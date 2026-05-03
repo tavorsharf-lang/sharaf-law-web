@@ -1,28 +1,26 @@
 import { useState } from 'react';
-import { Send, Phone, MapPin, Clock, Mail, Printer, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Loader2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { CONTACT, mailtoHref, telHref, whatsappUrl } from '@/lib/contact';
 import { isValidEmail, isValidPhone } from '@/lib/validation';
 
-const SERVICES = [
-  'רכישת דירה מיד שנייה',
-  'רכישת דירה מקבלן',
-  'מכירת דירה',
-  'צוואות וירושות',
-  'מיסוי מקרקעין',
-  'ליווי משפטי כללי',
-  'אחר',
-];
+const SERVICES = ['נדל״ן', 'צוואות', 'אחר'] as const;
+type Service = (typeof SERVICES)[number];
 
 const emptyForm = {
   name: '',
   phone: '',
   email: '',
-  service: [] as string[],
+  service: '' as Service | '',
   message: '',
-  website: '', // honeypot — must remain empty
+  website: '', // honeypot
 };
+
+const focusRing =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
+
+const inputBase =
+  'w-full px-4 py-3 rounded-input bg-bg-alt border text-ink placeholder:text-ink-mute transition-colors duration-150 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/15';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState(emptyForm);
@@ -31,20 +29,19 @@ const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const phoneHasError = phoneTouched && formData.phone.length > 0 && !isValidPhone(formData.phone);
-  const emailHasError = emailTouched && formData.email.length > 0 && !isValidEmail(formData.email);
+  const phoneHasError =
+    phoneTouched && formData.phone.length > 0 && !isValidPhone(formData.phone);
+  const emailHasError =
+    emailTouched && formData.email.length > 0 && !isValidEmail(formData.email);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const toggleService = (svc: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      service: prev.service.includes(svc)
-        ? prev.service.filter((s) => s !== svc)
-        : [...prev.service, svc],
-    }));
+  const setService = (svc: Service) => {
+    setFormData((prev) => ({ ...prev, service: svc }));
   };
 
   const resetForm = () => {
@@ -80,7 +77,17 @@ const ContactForm = () => {
       setEmailTouched(true);
       toast({
         title: 'כתובת דוא״ל לא תקינה',
-        description: 'בדקו שהכתובת מכילה @ ודומיין תקני, או השאירו את השדה ריק.',
+        description:
+          'בדקו שהכתובת מכילה @ ודומיין תקני, או השאירו את השדה ריק.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!formData.service) {
+      toast({
+        title: 'נא לבחור תחום',
+        description: 'בחרו אחד מהתחומים: נדל״ן, צוואות, או אחר.',
         variant: 'destructive',
       });
       return;
@@ -106,311 +113,227 @@ const ContactForm = () => {
     }
   };
 
+  if (submitted) {
+    return (
+      <div role="status" aria-live="polite" className="text-center py-6">
+        <CheckCircle2
+          className="text-brand mx-auto mb-4"
+          size={64}
+          strokeWidth={1.5}
+          aria-hidden="true"
+        />
+        <h3 className="font-display text-[22px] font-semibold text-ink mb-2">
+          תודה רבה!
+        </h3>
+        <p className="text-[15px] text-ink-soft mb-8">
+          נחזור אליכם בתוך יום עסקים.
+        </p>
+        <button
+          type="button"
+          onClick={resetForm}
+          className={`text-[13px] text-ink-mute hover:text-brand underline transition-colors duration-150 rounded-sm ${focusRing}`}
+        >
+          שליחת פנייה נוספת
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <section id="contact" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-[#2A2826] mb-4">צרו קשר</h2>
-          <p className="text-xl text-gray-600">נשמח לעזור לכם בכל שאלה או בקשה</p>
+    <>
+      <h3 className="font-display text-[22px] font-semibold text-ink leading-[1.20] tracking-[-0.010em]">
+        השאירו פרטים
+      </h3>
+      <p className="text-[14px] text-ink-mute mt-1.5 mb-7">
+        נחזור אליכם בתוך יום עסקים.
+      </p>
+
+      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+        {/* Honeypot */}
+        <div className="absolute opacity-0 pointer-events-none -z-10" aria-hidden="true">
+          <label htmlFor="website">השאר ריק</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            value={formData.website}
+            onChange={handleChange}
+          />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form OR Success State */}
-          <div className="bg-gray-50 rounded-lg p-8">
-            {submitted ? (
-              <div role="status" aria-live="polite" className="text-center py-6">
-                <CheckCircle2 className="text-[#A68D4F] mx-auto mb-4" size={72} strokeWidth={1.5} />
-                <h3 className="text-3xl font-bold text-[#2A2826] mb-3">תודה רבה!</h3>
-                <p className="text-lg text-gray-700 mb-2">פנייתך התקבלה.</p>
-                <p className="text-gray-600 mb-8">ניצור איתך קשר בהקדם, בדרך כלל תוך יום עסקים.</p>
+        {/* Name + Phone (2-col on sm+) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-[14px] font-medium text-ink mb-1.5"
+            >
+              שם מלא <span className="text-brand">*</span>
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              autoComplete="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="שם משפחה ופרטי"
+              required
+              className={`${inputBase} border-rule`}
+            />
+          </div>
 
-                <div className="bg-white border border-[#A68D4F]/30 rounded-lg p-6 mb-6">
-                  <p className="text-sm text-gray-600 mb-3">
-                    דחוף? אפשר ליצור איתנו קשר ישירות:
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <a
-                      href={telHref(CONTACT.phones[0].tel)}
-                      className="bg-[#2A2826] hover:bg-[#404040] text-white px-6 py-3 rounded-lg font-bold transition-colors inline-flex items-center justify-center gap-2"
-                    >
-                      <Phone size={18} />
-                      {CONTACT.phones[0].display}
-                    </a>
-                    <a
-                      href={whatsappUrl()}
-                      className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-bold transition-colors inline-flex items-center justify-center gap-2"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      ווטסאפ
-                    </a>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="text-sm text-[#2A2826] hover:text-[#A68D4F] underline transition-colors"
-                >
-                  שליחת פנייה נוספת
-                </button>
-              </div>
+          <div>
+            <label
+              htmlFor="phone"
+              className="block text-[14px] font-medium text-ink mb-1.5"
+            >
+              טלפון <span className="text-brand">*</span>
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              autoComplete="tel"
+              inputMode="tel"
+              dir="ltr"
+              value={formData.phone}
+              onChange={handleChange}
+              onBlur={() => setPhoneTouched(true)}
+              aria-invalid={phoneHasError}
+              aria-describedby="phone-hint phone-error"
+              placeholder="050-0000000"
+              required
+              className={`${inputBase} text-right ${
+                phoneHasError ? 'border-red-500 focus:border-red-500 focus:ring-red-500/15' : 'border-rule'
+              }`}
+            />
+            {phoneHasError ? (
+              <p id="phone-error" className="text-[12px] text-red-600 mt-1">
+                מספר לא תקין. נסו: 050-1234567
+              </p>
             ) : (
-              <>
-                <h3 className="text-2xl font-bold text-[#2A2826] mb-6">שלחו לנו הודעה</h3>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Honeypot — hidden from humans, bots fill it. */}
-                  <div className="absolute left-[-9999px]" aria-hidden="true">
-                    <label htmlFor="website">השאר ריק</label>
-                    <input
-                      type="text"
-                      id="website"
-                      name="website"
-                      tabIndex={-1}
-                      autoComplete="off"
-                      value={formData.website}
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                      שם מלא *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      autoComplete="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A68D4F] focus:border-transparent"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                      מספר טלפון *
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      autoComplete="tel"
-                      inputMode="tel"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      onBlur={() => setPhoneTouched(true)}
-                      aria-invalid={phoneHasError}
-                      aria-describedby="phone-hint phone-error"
-                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors ${
-                        phoneHasError
-                          ? 'border-red-500 focus:ring-red-500'
-                          : 'border-gray-300 focus:ring-[#A68D4F]'
-                      }`}
-                      required
-                    />
-                    {phoneHasError ? (
-                      <p id="phone-error" className="text-xs text-red-600 mt-1">
-                        מספר לא תקין. נסו: 050-1234567
-                      </p>
-                    ) : (
-                      <p id="phone-hint" className="text-xs text-gray-500 mt-1">
-                        לדוגמה: 050-1234567
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      דוא״ל
-                      <span className="text-xs text-gray-500 font-normal mr-2">(אופציונלי)</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="email"
-                      name="email"
-                      autoComplete="email"
-                      inputMode="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      onBlur={() => setEmailTouched(true)}
-                      aria-invalid={emailHasError}
-                      aria-describedby="email-hint email-error"
-                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors ${
-                        emailHasError
-                          ? 'border-red-500 focus:ring-red-500'
-                          : 'border-gray-300 focus:ring-[#A68D4F]'
-                      }`}
-                      placeholder="name@example.com"
-                    />
-                    {emailHasError ? (
-                      <p id="email-error" className="text-xs text-red-600 mt-1">
-                        כתובת דוא״ל לא תקינה
-                      </p>
-                    ) : (
-                      <p id="email-hint" className="text-xs text-gray-500 mt-1">
-                        אם תרצו שנענה גם בכתב
-                      </p>
-                    )}
-                  </div>
-
-                  <fieldset>
-                    <legend className="block text-sm font-medium text-gray-700 mb-2">
-                      סוג השירות הנדרש
-                      <span className="text-xs text-gray-500 font-normal mr-2">
-                        (ניתן לבחור יותר מאחד)
-                      </span>
-                    </legend>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {SERVICES.map((svc) => {
-                        const checked = formData.service.includes(svc);
-                        return (
-                          <label
-                            key={svc}
-                            className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-colors text-sm ${
-                              checked
-                                ? 'border-[#A68D4F] bg-[#A68D4F]/10 text-[#2A2826]'
-                                : 'border-gray-300 bg-white hover:border-[#A68D4F]/50 text-gray-700'
-                            }`}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={checked}
-                              onChange={() => toggleService(svc)}
-                              className="accent-[#A68D4F]"
-                            />
-                            <span>{svc}</span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </fieldset>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                      הערות נוספות
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      rows={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A68D4F] focus:border-transparent"
-                      placeholder="תארו בקצרה את הצרכים שלכם..."
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#A68D4F] hover:bg-[#8A7340] text-[#2A2826] px-8 py-4 rounded-lg font-bold text-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <Send size={20} />
-                    {isSubmitting ? 'שולח...' : 'שלח בקשה לייעוץ חינם'}
-                  </button>
-                </form>
-              </>
+              <p id="phone-hint" className="text-[12px] text-ink-mute mt-1">
+                לדוגמה: 050-1234567
+              </p>
             )}
           </div>
-
-          {/* Contact Information */}
-          <div className="space-y-8">
-            <div className="bg-[#2A2826] text-white rounded-lg p-8">
-              <h3 className="text-2xl font-bold text-[#A68D4F] mb-6">פרטי יצירת קשר</h3>
-
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <Phone className="text-[#A68D4F] mt-1" size={24} />
-                  <div>
-                    <h4 className="font-bold mb-2">טלפונים</h4>
-                    {CONTACT.phones.map((p) => (
-                      <p key={p.tel} className="text-gray-300">{p.display}</p>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <Printer className="text-[#A68D4F] mt-1" size={24} />
-                  <div>
-                    <h4 className="font-bold mb-2">פקס</h4>
-                    <p className="text-gray-300">{CONTACT.fax.display}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <Mail className="text-[#A68D4F] mt-1" size={24} />
-                  <div>
-                    <h4 className="font-bold mb-2">דואר אלקטרוני</h4>
-                    <a href={mailtoHref()} className="text-gray-300 hover:text-[#A68D4F] transition-colors">
-                      {CONTACT.email}
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <MapPin className="text-[#A68D4F] mt-1" size={24} />
-                  <div>
-                    <h4 className="font-bold mb-2">כתובת</h4>
-                    <p className="text-gray-300">
-                      {CONTACT.address.street}<br />
-                      {CONTACT.address.city}, {CONTACT.address.postalCode}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <Clock className="text-[#A68D4F] mt-1" size={24} />
-                  <div>
-                    <h4 className="font-bold mb-2">שעות פעילות</h4>
-                    <p className="text-gray-300">
-                      {CONTACT.hours.weekdays.label}: {CONTACT.hours.weekdays.time}<br />
-                      {CONTACT.hours.friday.label}: {CONTACT.hours.friday.time}<br />
-                      {CONTACT.hours.emergency}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6 rounded-lg overflow-hidden border border-[#A68D4F]/30">
-                <iframe
-                  src={`https://maps.google.com/maps?q=${encodeURIComponent(`${CONTACT.address.street}, ${CONTACT.address.city}`)}&output=embed`}
-                  width="100%"
-                  height="280"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={`מפה - ${CONTACT.address.street}, ${CONTACT.address.city}`}
-                />
-              </div>
-            </div>
-
-            <div className="bg-[#A68D4F] text-[#2A2826] rounded-lg p-8 text-center">
-              <h4 className="text-xl font-bold mb-4">ייעוץ ראשוני חינם!</h4>
-              <p className="mb-6">התקשרו עכשיו ונשמח להעניק לכם ייעוץ ראשוני ללא עלות</p>
-              <div className="flex flex-col gap-3">
-                <a
-                  href={telHref(CONTACT.phones[0].tel)}
-                  className="bg-[#2A2826] hover:bg-[#404040] text-white px-6 py-3 rounded-lg font-bold transition-colors"
-                >
-                  התקשרו: {CONTACT.phones[0].display}
-                </a>
-                <a
-                  href={whatsappUrl()}
-                  className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-bold transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  ווטסאפ: {CONTACT.whatsapp.display}
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-    </section>
+
+        {/* Email (full row) */}
+        <div>
+          <label
+            htmlFor="email"
+            className="block text-[14px] font-medium text-ink mb-1.5"
+          >
+            דוא״ל
+            <span className="text-[12px] text-ink-mute font-normal mx-2">· אופציונלי</span>
+          </label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            autoComplete="email"
+            inputMode="email"
+            dir="ltr"
+            value={formData.email}
+            onChange={handleChange}
+            onBlur={() => setEmailTouched(true)}
+            aria-invalid={emailHasError}
+            aria-describedby="email-error"
+            placeholder="optional@email.com"
+            className={`${inputBase} text-right ${
+              emailHasError ? 'border-red-500 focus:border-red-500 focus:ring-red-500/15' : 'border-rule'
+            }`}
+          />
+          {emailHasError && (
+            <p id="email-error" className="text-[12px] text-red-600 mt-1">
+              כתובת דוא״ל לא תקינה
+            </p>
+          )}
+        </div>
+
+        {/* Service chips */}
+        <fieldset>
+          <legend className="block text-[14px] font-medium text-ink mb-2">
+            תחום הפנייה <span className="text-brand">*</span>
+          </legend>
+          <div role="radiogroup" className="flex flex-wrap gap-2">
+            {SERVICES.map((svc) => {
+              const selected = formData.service === svc;
+              return (
+                <button
+                  key={svc}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => setService(svc)}
+                  className={`rounded-pill px-5 py-2 text-[14px] font-medium transition-colors duration-150 border ${focusRing} ${
+                    selected
+                      ? 'bg-brand text-white border-brand'
+                      : 'bg-bg-alt text-ink-soft border-rule hover:border-brand hover:text-ink'
+                  }`}
+                >
+                  {svc}
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
+
+        {/* Message */}
+        <div>
+          <label
+            htmlFor="message"
+            className="block text-[14px] font-medium text-ink mb-1.5"
+          >
+            הודעה
+            <span className="text-[12px] text-ink-mute font-normal mx-2">· אופציונלי</span>
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            rows={4}
+            maxLength={1000}
+            placeholder="ספרו בקצרה במה נוכל לעזור..."
+            className={`${inputBase} border-rule resize-none`}
+          />
+        </div>
+
+        {/* Submit */}
+        <div className="pt-2">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`group w-full inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-deep text-white rounded-pill py-3.5 text-[15px] font-medium transition-colors duration-200 ease-default disabled:opacity-60 disabled:cursor-not-allowed ${focusRing}`}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+                שולח...
+              </>
+            ) : (
+              <>
+                שליחת בקשה
+                <ArrowLeft
+                  size={16}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  className="transition-transform duration-150 group-hover:-translate-x-0.5"
+                />
+              </>
+            )}
+          </button>
+          <p className="text-[12px] text-ink-mute text-center mt-3">
+            השליחה אינה מהווה ייעוץ משפטי.
+          </p>
+        </div>
+      </form>
+    </>
   );
 };
 

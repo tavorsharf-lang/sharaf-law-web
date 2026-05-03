@@ -24,22 +24,21 @@ describe('ContactForm', () => {
     toastMock.mockReset();
   });
 
-  it('submits with name, phone, and selected services', async () => {
+  it('submits with name, phone, and a selected service chip', async () => {
     invokeMock.mockResolvedValueOnce({ data: { success: true }, error: null });
     const user = userEvent.setup();
     render(<ContactForm />);
 
     await user.type(screen.getByLabelText(/שם מלא/), 'תבור שרף');
-    await user.type(screen.getByLabelText(/מספר טלפון/), '0501234567');
-    await user.click(screen.getByLabelText(/רכישת דירה מקבלן/));
-    await user.click(screen.getByLabelText(/מיסוי מקרקעין/));
-    await user.click(screen.getByRole('button', { name: /שלח בקשה לייעוץ חינם/ }));
+    await user.type(screen.getByLabelText(/טלפון/), '0501234567');
+    await user.click(screen.getByRole('radio', { name: 'נדל״ן' }));
+    await user.click(screen.getByRole('button', { name: /שליחת בקשה/ }));
 
     expect(invokeMock).toHaveBeenCalledWith('submit-contact', expect.objectContaining({
       body: expect.objectContaining({
         name: 'תבור שרף',
         phone: '0501234567',
-        service: ['רכישת דירה מקבלן', 'מיסוי מקרקעין'],
+        service: 'נדל״ן',
       }),
     }));
   });
@@ -50,11 +49,12 @@ describe('ContactForm', () => {
     render(<ContactForm />);
 
     await user.type(screen.getByLabelText(/שם מלא/), 'דנה כהן');
-    await user.type(screen.getByLabelText(/מספר טלפון/), '0501234567');
-    await user.click(screen.getByRole('button', { name: /שלח בקשה לייעוץ חינם/ }));
+    await user.type(screen.getByLabelText(/טלפון/), '0501234567');
+    await user.click(screen.getByRole('radio', { name: 'צוואות' }));
+    await user.click(screen.getByRole('button', { name: /שליחת בקשה/ }));
 
     expect(await screen.findByText('תודה רבה!')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /שלח בקשה לייעוץ חינם/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /שליחת בקשה/ })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /שליחת פנייה נוספת/ })).toBeInTheDocument();
   });
 
@@ -63,8 +63,8 @@ describe('ContactForm', () => {
     render(<ContactForm />);
 
     await user.type(screen.getByLabelText(/שם מלא/), 'תבור');
-    await user.type(screen.getByLabelText(/מספר טלפון/), '123');
-    await user.click(screen.getByRole('button', { name: /שלח בקשה לייעוץ חינם/ }));
+    await user.type(screen.getByLabelText(/טלפון/), '123');
+    await user.click(screen.getByRole('button', { name: /שליחת בקשה/ }));
 
     expect(invokeMock).not.toHaveBeenCalled();
     expect(toastMock).toHaveBeenCalledWith(expect.objectContaining({
@@ -83,7 +83,7 @@ describe('ContactForm', () => {
     const user = userEvent.setup();
     render(<ContactForm />);
 
-    const phone = screen.getByLabelText(/מספר טלפון/);
+    const phone = screen.getByLabelText(/טלפון/);
     await user.type(phone, 'abc');
     await user.tab(); // blur
 
@@ -96,8 +96,9 @@ describe('ContactForm', () => {
     render(<ContactForm />);
 
     await user.type(screen.getByLabelText(/שם מלא/), 'דנה');
-    await user.type(screen.getByLabelText(/מספר טלפון/), '0501234567');
-    await user.click(screen.getByRole('button', { name: /שלח בקשה לייעוץ חינם/ }));
+    await user.type(screen.getByLabelText(/טלפון/), '0501234567');
+    await user.click(screen.getByRole('radio', { name: 'אחר' }));
+    await user.click(screen.getByRole('button', { name: /שליחת בקשה/ }));
 
     expect(invokeMock).toHaveBeenCalledWith('submit-contact', expect.objectContaining({
       body: expect.objectContaining({ email: '' }),
@@ -109,9 +110,10 @@ describe('ContactForm', () => {
     render(<ContactForm />);
 
     await user.type(screen.getByLabelText(/שם מלא/), 'דנה');
-    await user.type(screen.getByLabelText(/מספר טלפון/), '0501234567');
+    await user.type(screen.getByLabelText(/טלפון/), '0501234567');
     await user.type(screen.getByLabelText(/דוא״ל/), 'not-an-email');
-    await user.click(screen.getByRole('button', { name: /שלח בקשה לייעוץ חינם/ }));
+    await user.click(screen.getByRole('radio', { name: 'נדל״ן' }));
+    await user.click(screen.getByRole('button', { name: /שליחת בקשה/ }));
 
     expect(invokeMock).not.toHaveBeenCalled();
     expect(toastMock).toHaveBeenCalledWith(expect.objectContaining({
@@ -126,12 +128,28 @@ describe('ContactForm', () => {
     render(<ContactForm />);
 
     await user.type(screen.getByLabelText(/שם מלא/), 'דנה');
-    await user.type(screen.getByLabelText(/מספר טלפון/), '0501234567');
+    await user.type(screen.getByLabelText(/טלפון/), '0501234567');
     await user.type(screen.getByLabelText(/דוא״ל/), 'dana@example.com');
-    await user.click(screen.getByRole('button', { name: /שלח בקשה לייעוץ חינם/ }));
+    await user.click(screen.getByRole('radio', { name: 'צוואות' }));
+    await user.click(screen.getByRole('button', { name: /שליחת בקשה/ }));
 
     expect(invokeMock).toHaveBeenCalledWith('submit-contact', expect.objectContaining({
       body: expect.objectContaining({ email: 'dana@example.com' }),
+    }));
+  });
+
+  it('blocks submission when no service is selected', async () => {
+    const user = userEvent.setup();
+    render(<ContactForm />);
+
+    await user.type(screen.getByLabelText(/שם מלא/), 'דנה');
+    await user.type(screen.getByLabelText(/טלפון/), '0501234567');
+    await user.click(screen.getByRole('button', { name: /שליחת בקשה/ }));
+
+    expect(invokeMock).not.toHaveBeenCalled();
+    expect(toastMock).toHaveBeenCalledWith(expect.objectContaining({
+      title: 'נא לבחור תחום',
+      variant: 'destructive',
     }));
   });
 
