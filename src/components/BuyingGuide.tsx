@@ -1,146 +1,93 @@
+import { ArrowLeft } from 'lucide-react';
 
-import { CheckCircle, AlertTriangle, DollarSign, FileText } from 'lucide-react';
-import { CONTACT, telHref } from '@/lib/contact';
+type Chapter = {
+  number: string;
+  title: string;
+  body: string;
+  href: string;
+};
+
+const CHAPTERS: Chapter[] = [
+  {
+    number: 'פרק 01',
+    title: '5 שלבי רכישת דירה',
+    body: 'מבדיקה ראשונית של הנכס ועד חתימה על החוזה הסופי — כל שלב, מה לבדוק, ולמה זה חשוב.',
+    href: '#contact',
+  },
+  {
+    number: 'פרק 02',
+    title: 'מה לבדוק לפני חתימה',
+    body: 'בעלות, עיקולים, תב״ע, היתרי בנייה, עלויות נלוות — רשימת הבדיקות שאסור לדלג עליהן לפני שחותמים.',
+    href: '#contact',
+  },
+  {
+    number: 'פרק 03',
+    title: 'מה עולה לקנות דירה',
+    body: 'מס רכישה, שכר טרחת עו״ד, דמי תיווך, מדידות — מבט כן על העלויות הנלוות שמעבר למחיר הדירה.',
+    href: '#contact',
+  },
+];
+
+const focusRing =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
 
 const BuyingGuide = () => {
-  const steps = [
-    {
-      title: "בדיקה ראשונית",
-      description: "בדיקת המסמכים הבסיסיים של הנכס"
-    },
-    {
-      title: "בדיקת זכויות במקרקעין",
-      description: "וידוא בעלות ובדיקת עיקולים וחובות"
-    },
-    {
-      title: "הכנת חוזה קדם מכר",
-      description: "עריכת חוזה המגן על זכויותיכם"
-    },
-    {
-      title: "בדיקות משפטיות מעמיקות",
-      description: "בדיקת תב״ע, היתרי בנייה וועדים"
-    },
-    {
-      title: "חתימה על החוזה הסופי",
-      description: "ליווי בחתימה והעברת הכספים"
-    }
-  ];
-
-  const tips = [
-    "בדקו תמיד את תעודת הזהות של המוכר מול בעלות במקרקעין",
-    "וודאו שאין עיקולים או חובות על הנכס",
-    "בדקו את תב״ע המקומית ותוכניות פיתוח עתידיות",
-    "שימו לב לעלויות נלוות: מס רכישה, שכ״ט, היטלים",
-    "קבלו אישור עו״ד לחוזה לפני החתימה"
-  ];
-
-  const costs = [
-    { item: "מס רכישה", percentage: "0.5%-10%" },
-    { item: "שכר טרחת עו״ד", percentage: "1%-1.5%" },
-    { item: "דמי תיווך", percentage: "2%" },
-    { item: "מדידה ובדיקות", percentage: "0.2%" }
-  ];
-
   return (
-    <section id="articles" className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-[#2A2826] mb-4">
-            מדריך לרוכשי דירה
-          </h2>
-          <p className="text-xl text-gray-600">
-            כל מה שחשוב לדעת לפני רכישת דירה
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Steps */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="flex items-center mb-6">
-              <CheckCircle className="text-[#A68D4F] ml-3" size={32} />
-              <h3 className="text-2xl font-bold text-[#2A2826]">
-                שלבי רכישת הדירה
-              </h3>
-            </div>
-            <div className="space-y-4">
-              {steps.map((step, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-[#A68D4F] text-[#2A2826] rounded-full flex items-center justify-center font-bold text-sm">
-                    {index + 1}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-[#2A2826] mb-1">
-                      {step.title}
-                    </h4>
-                    <p className="text-gray-600 text-sm">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+    <section
+      id="guide"
+      className="bg-bg-alt px-4 md:px-10 lg:px-16 py-[120px]"
+    >
+      <div className="max-w-[1280px] mx-auto">
+        <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+          <div>
+            <p className="text-eyebrow text-brand mb-4">מאמרים ומשאבים</p>
+            <h2 className="font-display text-[36px] md:text-[44px] lg:text-[48px] font-semibold leading-[1.10] tracking-[-0.020em] text-ink">
+              המדריך לרוכשי דירה.
+            </h2>
           </div>
+          <a
+            href="#contact"
+            className={`group inline-flex items-center gap-2 text-[14px] font-medium text-brand hover:text-brand-deep transition-colors duration-150 self-start md:self-end rounded-sm ${focusRing}`}
+          >
+            קריאת המדריך המלא
+            <ArrowLeft
+              size={16}
+              strokeWidth={2}
+              aria-hidden="true"
+              className="transition-transform duration-150 group-hover:-translate-x-0.5"
+            />
+          </a>
+        </header>
 
-          {/* Tips */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="flex items-center mb-6">
-              <AlertTriangle className="text-[#A68D4F] ml-3" size={32} />
-              <h3 className="text-2xl font-bold text-[#2A2826]">
-                טיפים חשובים
-              </h3>
-            </div>
-            <div className="space-y-4">
-              {tips.map((tip, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-[#A68D4F] rounded-full mt-2"></div>
-                  <p className="text-gray-700 text-sm leading-relaxed">
-                    {tip}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Costs */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="flex items-center mb-6">
-              <DollarSign className="text-[#A68D4F] ml-3" size={32} />
-              <h3 className="text-2xl font-bold text-[#2A2826]">
-                עלויות נלוות
-              </h3>
-            </div>
-            <div className="space-y-4">
-              {costs.map((cost, index) => (
-                <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-700">{cost.item}</span>
-                  <span className="font-bold text-[#2A2826]">{cost.percentage}</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 bg-[#A68D4F] text-[#2A2826] rounded-lg p-4 text-center">
-              <FileText size={24} className="mx-auto mb-2" />
-              <p className="font-bold text-sm">
-                התייעצו איתנו לחישוב מדויק של העלויות
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-16 text-center">
-          <div className="bg-[#2A2826] text-white rounded-lg p-8 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold mb-4 text-[#A68D4F]">
-              רוצים ליווי מקצועי בקניית הדירה?
-            </h3>
-            <p className="text-lg mb-6">
-              הייעוץ הראשוני שלנו חינם ויכול לחסוך לכם הרבה כסף וכאב ראש
-            </p>
-            <a
-              href={telHref(CONTACT.phones[0].tel)}
-              className="bg-[#A68D4F] hover:bg-[#8A7340] text-[#2A2826] px-8 py-4 rounded-lg font-bold text-lg transition-colors inline-block"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
+          {CHAPTERS.map((chapter) => (
+            <article
+              key={chapter.number}
+              className="bg-white rounded-card pt-9 px-8 pb-8 flex flex-col border-t-[3px] border-brand"
             >
-              התקשרו עכשיו לייעוץ חינם
-            </a>
-          </div>
+              <p className="font-display text-[12px] font-semibold tracking-[0.12em] text-brand mb-4">
+                {chapter.number}
+              </p>
+              <h3 className="font-display text-[26px] font-semibold leading-tight tracking-[-0.010em] text-ink">
+                {chapter.title}
+              </h3>
+              <p className="text-[15px] leading-[1.7] text-ink-soft mt-3.5 flex-1">
+                {chapter.body}
+              </p>
+              <a
+                href={chapter.href}
+                className={`group inline-flex items-center gap-2 text-[14px] font-medium text-brand hover:text-brand-deep transition-colors duration-150 mt-6 self-start rounded-sm ${focusRing}`}
+              >
+                קריאת הפרק
+                <ArrowLeft
+                  size={16}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  className="transition-transform duration-150 group-hover:-translate-x-0.5"
+                />
+              </a>
+            </article>
+          ))}
         </div>
       </div>
     </section>

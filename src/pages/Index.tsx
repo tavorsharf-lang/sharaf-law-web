@@ -1,11 +1,9 @@
-
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
-import WhyChooseUs from '@/components/WhyChooseUs';
-import Services from '@/components/Services';
-import Reviews from '@/components/Reviews';
-import About from '@/components/About';
+import PracticeAreas from '@/components/PracticeAreas';
+import WhySharaf from '@/components/WhySharaf';
 import BuyingGuide from '@/components/BuyingGuide';
+import Reviews from '@/components/Reviews';
 import ContactForm from '@/components/ContactForm';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
@@ -16,11 +14,10 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <WhyChooseUs />
-        <Services />
-        <Reviews />
-        <About />
+        <PracticeAreas />
+        <WhySharaf />
         <BuyingGuide />
+        <Reviews />
         <ContactForm />
       </main>
       <Footer />
