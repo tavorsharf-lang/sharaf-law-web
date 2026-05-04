@@ -102,15 +102,19 @@ const Contact = () => {
                     <dt className="text-[12px] font-semibold tracking-[0.06em] text-brand-light">
                       {item.label}
                     </dt>
-                    <dd
-                      {...(item.ltr ? { dir: 'ltr' as const } : {})}
-                      className="font-display text-[17px] font-medium text-white mt-1.5"
-                    >
-                      {item.value}
+                    <dd className="mt-1.5">
+                      <span
+                        {...(item.ltr ? { dir: 'ltr' as const } : {})}
+                        className="font-display text-[17px] font-medium text-white block"
+                      >
+                        {item.value}
+                      </span>
+                      {item.caption && (
+                        <span className="text-[12px] text-white/65 block mt-1">
+                          {item.caption}
+                        </span>
+                      )}
                     </dd>
-                    {item.caption && (
-                      <p className="text-[12px] text-white/65 mt-1">{item.caption}</p>
-                    )}
                   </div>
                 ))}
               </dl>

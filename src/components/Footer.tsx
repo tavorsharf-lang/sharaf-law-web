@@ -47,9 +47,9 @@ const Footer = () => {
 
           {/* 2 — Practice areas */}
           <div>
-            <h2 className="font-display text-[12px] font-semibold tracking-[0.06em] text-white/65 mb-5">
+            <h3 className="font-display text-[12px] font-semibold tracking-[0.06em] text-white/65 mb-5">
               תחומי התמחות
-            </h2>
+            </h3>
             <ul className="space-y-3">
               {PRACTICE_LINKS.map((item) => (
                 <li key={item.label}>
@@ -66,9 +66,9 @@ const Footer = () => {
 
           {/* 3 — Contact */}
           <div>
-            <h2 className="font-display text-[12px] font-semibold tracking-[0.06em] text-white/65 mb-5">
+            <h3 className="font-display text-[12px] font-semibold tracking-[0.06em] text-white/65 mb-5">
               יצירת קשר
-            </h2>
+            </h3>
             <ul className="space-y-3 text-[14.5px] leading-[1.5] text-white/85">
               <li>
                 <a
@@ -109,9 +109,9 @@ const Footer = () => {
 
           {/* 4 — Hours */}
           <div>
-            <h2 className="font-display text-[12px] font-semibold tracking-[0.06em] text-white/65 mb-5">
+            <h3 className="font-display text-[12px] font-semibold tracking-[0.06em] text-white/65 mb-5">
               שעות פעילות
-            </h2>
+            </h3>
             <ul className="space-y-2 text-[14.5px] leading-[1.5] text-white/85">
               <li className="flex justify-between gap-4 max-w-[200px]">
                 <span>ראשון–חמישי</span>

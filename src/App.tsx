@@ -1,36 +1,38 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Privacy from "./pages/Privacy";
-import Accessibility from "./pages/Accessibility";
-import PhotoTest from "./pages/PhotoTest";
-import Analytics from "./components/Analytics";
-import CookieBanner from "./components/CookieBanner";
+import { lazy, Suspense } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
+import Index from './pages/Index';
+import Analytics from './components/Analytics';
+import CookieBanner from './components/CookieBanner';
 
-const queryClient = new QueryClient();
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Accessibility = lazy(() => import('./pages/Accessibility'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const PhotoTest = lazy(() => import('./pages/PhotoTest'));
+
+const RouteFallback = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <p className="text-ink-mute" role="status" aria-live="polite">
+      טוען...
+    </p>
+  </div>
+);
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Analytics />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/accessibility" element={<Accessibility />} />
-          <Route path="/photo-test" element={<PhotoTest />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <CookieBanner />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <BrowserRouter>
+    <Toaster />
+    <Analytics />
+    <Suspense fallback={<RouteFallback />}>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/accessibility" element={<Accessibility />} />
+        <Route path="/photo-test" element={<PhotoTest />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
+    <CookieBanner />
+  </BrowserRouter>
 );
 
 export default App;
